@@ -11,7 +11,9 @@ public class UserInput : MonoBehaviour
     public const string INTERACT_ACTION_NAME = "Interact";
     
     public static event Action<Vector2> OnMove;
+    public static event Action OnStopMoving;
     private InputAction moveAction;
+    private bool wasMoving = false;
 
     public static event Action OnJump;
     private InputAction jumpAction;
@@ -48,9 +50,18 @@ public class UserInput : MonoBehaviour
     void Update()
     {
         if(moveAction.IsInProgress()) OnMoveTriggered();
+        else if (wasMoving)
+        {
+            wasMoving = false;
+            OnStopMoving?.Invoke();
+        }
     }
 
-    private void OnMoveTriggered() => OnMove?.Invoke(moveAction.ReadValue<Vector2>());
+    private void OnMoveTriggered()
+    {
+        wasMoving = true;
+        OnMove?.Invoke(moveAction.ReadValue<Vector2>());
+    }
 
     private void OnJumpStarted(CallbackContext context) => OnJump?.Invoke();
 
