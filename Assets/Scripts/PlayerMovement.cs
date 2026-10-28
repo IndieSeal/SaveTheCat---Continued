@@ -36,18 +36,32 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if(!IsGrounded()) coyoteJumpTimer -= Time.deltaTime;
-        else if(rb.linearVelocityY <= 0) coyoteJumpTimer = coyoteJump;
-
-        if(jumpBufferTimer > 0)
-        {
-            jumpBufferTimer -= Time.deltaTime;
-            Jump();
-        }
+        CoyoteJump();
+        BufferJump();
     }
+
+    #region Movement
 
     private void Move(Vector2 input) => rb.linearVelocityX = input.x * movementSpeed;
     private void StopMove() => rb.linearVelocityX = 0;
+
+    #endregion
+    
+    #region Jumping
+
+    private void CoyoteJump()
+    {
+        if(!IsGrounded()) coyoteJumpTimer -= Time.deltaTime;
+        else if(rb.linearVelocityY <= 0) coyoteJumpTimer = coyoteJump;
+    }
+
+    private void BufferJump()
+    {
+        if(jumpBufferTimer <= 0) return;
+
+        jumpBufferTimer -= Time.deltaTime;
+        Jump();
+    }
 
     private void InputJump()
     {
@@ -66,6 +80,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CanJump() => coyoteJumpTimer > 0 || !Application.isPlaying && IsGrounded();
     private bool IsGrounded() => Physics2D.OverlapCircle(transform.position, groundedRadius, groundedMask) != null;
+
+    #endregion
 
     void OnTriggerEnter2D(Collider2D collision)
     {

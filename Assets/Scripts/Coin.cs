@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour, IPickable
 {
-    [SerializeField] private AudioSource blingSound;
+    [SerializeField] private AudioClip blingSound;
     
     public void OnPickup()
     {
-        blingSound.Play();
+        SimpleAudioManager.Play(blingSound);
         gameObject.SetActive(false);
     }
 }
