@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Movement")]
     [SerializeField] private float movementSpeed = 5;
+    private bool right = true;
 
     [Header("Jumping")]
     [SerializeField] private float jumpForce = 20;
@@ -42,7 +43,17 @@ public class PlayerMovement : MonoBehaviour
 
     #region Movement
 
-    private void Move(Vector2 input) => rb.linearVelocityX = input.x * movementSpeed;
+    private void Move(Vector2 input)
+    {
+        rb.linearVelocityX = input.x * movementSpeed;
+
+        bool lastRight = right;
+        if(input.x > 0) right = true;
+        else right = false;
+        
+        float multiplier = lastRight == right ? 1 : -1;
+        transform.localScale = new Vector2(transform.localScale.x * multiplier, transform.localScale.y);
+    }
     private void StopMove() => rb.linearVelocityX = 0;
 
     #endregion
