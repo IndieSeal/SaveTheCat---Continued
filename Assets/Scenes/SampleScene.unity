@@ -1023,7 +1023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   rb: {fileID: 1948758437}
   movementSpeed: 5
-  jumpForce: 50
+  jumpForce: 20
   groundedRadius: 0.2
   groundedMask:
     serializedVersion: 2

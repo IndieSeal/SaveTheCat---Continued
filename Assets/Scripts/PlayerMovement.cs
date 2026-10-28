@@ -12,13 +12,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 20;
     [SerializeField] private float groundedRadius = 0.2f;
     [SerializeField] private LayerMask groundedMask;
+    [Space]
+    [SerializeField] private float jumpBuffer = 0.1f;
+    private float jumpBufferTimer;
     
     void OnEnable()
     {
         UserInput.OnMove += Move;
         UserInput.OnStopMoving += StopMove;
 
-        UserInput.OnJump += Jump;
+        UserInput.OnJump += InputJump;
     }
 
     void OnDisable()
@@ -26,17 +29,33 @@ public class PlayerMovement : MonoBehaviour
         UserInput.OnMove -= Move;
         UserInput.OnStopMoving -= StopMove;
 
-        UserInput.OnJump -= Jump;
+        UserInput.OnJump -= InputJump;
+    }
+
+    void Update()
+    {
+        if(jumpBufferTimer > 0)
+        {
+            jumpBufferTimer -= Time.deltaTime;
+            Jump();
+        }
     }
 
     private void Move(Vector2 input) => rb.linearVelocityX = input.x * movementSpeed;
     private void StopMove() => rb.linearVelocityX = 0;
 
-    private void Jump()
+    private void InputJump()
     {
-        if(!IsGrounded()) return;
+        if(!Jump()) jumpBufferTimer = jumpBuffer;
+    }
+
+    private bool Jump()
+    {
+        if(!IsGrounded()) return false;
 
         rb.linearVelocityY = jumpForce;
+        jumpBufferTimer = 0;
+        return true;
     }
 
     private bool IsGrounded() => Physics2D.OverlapCircle(transform.position, groundedRadius, groundedMask) != null;
