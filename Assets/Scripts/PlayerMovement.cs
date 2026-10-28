@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Animator anim;
     
     [Header("Movement")]
     [SerializeField] private float movementSpeed = 5;
@@ -39,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
     {
         CoyoteJump();
         BufferJump();
+
+        anim.SetFloat("VelocityY", rb.linearVelocityY);
     }
 
     #region Movement
@@ -53,8 +56,14 @@ public class PlayerMovement : MonoBehaviour
         
         float multiplier = lastRight == right ? 1 : -1;
         transform.localScale = new Vector2(transform.localScale.x * multiplier, transform.localScale.y);
+
+        anim.SetBool("IsMoving", true);
     }
-    private void StopMove() => rb.linearVelocityX = 0;
+    private void StopMove()
+    {
+        rb.linearVelocityX = 0;
+        anim.SetBool("IsMoving", false);
+    }
 
     #endregion
     
