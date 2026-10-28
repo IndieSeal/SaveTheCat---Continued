@@ -14,7 +14,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundedMask;
     [Space]
     [SerializeField] private float jumpBuffer = 0.1f;
+    [SerializeField] private float coyoteJump = 0.2f;
     private float jumpBufferTimer;
+    private float coyoteJumpTimer;
     
     void OnEnable()
     {
@@ -34,6 +36,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if(!IsGrounded()) coyoteJumpTimer -= Time.deltaTime;
+        else if(rb.linearVelocityY <= 0) coyoteJumpTimer = coyoteJump;
+
         if(jumpBufferTimer > 0)
         {
             jumpBufferTimer -= Time.deltaTime;
@@ -51,13 +56,15 @@ public class PlayerMovement : MonoBehaviour
 
     private bool Jump()
     {
-        if(!IsGrounded()) return false;
+        if(!CanJump()) return false;
 
         rb.linearVelocityY = jumpForce;
         jumpBufferTimer = 0;
+        coyoteJumpTimer = 0;
         return true;
     }
 
+    private bool CanJump() => coyoteJumpTimer > 0 || !Application.isPlaying && IsGrounded();
     private bool IsGrounded() => Physics2D.OverlapCircle(transform.position, groundedRadius, groundedMask) != null;
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -67,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = IsGrounded() ? Color.green : Color.red;
+        Gizmos.color = CanJump() ? Color.green : Color.red;
         Gizmos.DrawWireSphere(transform.position, groundedRadius);
     }
 }

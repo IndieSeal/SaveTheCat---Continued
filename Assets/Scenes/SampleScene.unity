@@ -1028,6 +1028,8 @@ MonoBehaviour:
   groundedMask:
     serializedVersion: 2
     m_Bits: 64
+  jumpBuffer: 0.1
+  coyoteJump: 0.15
 --- !u!70 &1948758436
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1038,7 +1040,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 2165ef21f93cfad5b8cde71ea72bb78d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
