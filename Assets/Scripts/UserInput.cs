@@ -16,6 +16,7 @@ public class UserInput : MonoBehaviour
     private bool wasMoving = false;
 
     public static event Action OnJump;
+    public static event Action OnStopJump;
     private InputAction jumpAction;
 
     public static event Action OnInteractStart;
@@ -34,6 +35,7 @@ public class UserInput : MonoBehaviour
     void OnEnable()
     {
         jumpAction.started += OnJumpStarted;
+        jumpAction.canceled += OnJumpStop;
 
         interactAction.started += OnInteractStarted;
         interactAction.canceled += OnInteractStopped;
@@ -42,19 +44,22 @@ public class UserInput : MonoBehaviour
     void OnDisable()
     {
         jumpAction.started -= OnJumpStarted;
+        jumpAction.canceled -= OnJumpStop;
 
         interactAction.started -= OnInteractStarted;
         interactAction.canceled -= OnInteractStopped;
     }
 
     void Update()
-    {
+    {        
         if(moveAction.IsInProgress()) OnMoveTriggered();
         else if (wasMoving)
         {
             wasMoving = false;
             OnStopMoving?.Invoke();
         }
+     
+        //if(jumpAction.IsInProgress()) OnJumpHeld();
     }
 
     private void OnMoveTriggered()
@@ -64,6 +69,7 @@ public class UserInput : MonoBehaviour
     }
 
     private void OnJumpStarted(CallbackContext context) => OnJump?.Invoke();
+    private void OnJumpStop(CallbackContext context) => OnStopJump?.Invoke();
 
     private void OnInteractStarted(CallbackContext context) => OnInteractStart?.Invoke();
     private void OnInteractStopped(CallbackContext context) => OnInteractStop?.Invoke();

@@ -949,7 +949,7 @@ MonoBehaviour:
   rb: {fileID: 1948758437}
   anim: {fileID: 1327931854}
   movementSpeed: 10
-  jumpForce: 20
+  jumpForce: 40
   groundedRadius: 0.2
   groundedMask:
     serializedVersion: 2

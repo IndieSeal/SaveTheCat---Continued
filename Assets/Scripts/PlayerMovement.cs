@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private const string ANIM_VELOCITY_Y = "VelocityY";
+    private const string ANIM_IS_MOVING = "IsMoving";
+
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator anim;
@@ -26,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
         UserInput.OnStopMoving += StopMove;
 
         UserInput.OnJump += InputJump;
+        UserInput.OnStopJump += StopJump;
     }
 
     void OnDisable()
@@ -34,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         UserInput.OnStopMoving -= StopMove;
 
         UserInput.OnJump -= InputJump;
+        UserInput.OnStopJump -= StopJump;
     }
 
     void Update()
@@ -41,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         CoyoteJump();
         BufferJump();
 
-        anim.SetFloat("VelocityY", rb.linearVelocityY);
+        anim.SetFloat(ANIM_VELOCITY_Y, rb.linearVelocityY);
     }
 
     #region Movement
@@ -57,12 +62,12 @@ public class PlayerMovement : MonoBehaviour
         float multiplier = lastRight == right ? 1 : -1;
         transform.localScale = new Vector2(transform.localScale.x * multiplier, transform.localScale.y);
 
-        anim.SetBool("IsMoving", true);
+        anim.SetBool(ANIM_IS_MOVING, true);
     }
     private void StopMove()
     {
         rb.linearVelocityX = 0;
-        anim.SetBool("IsMoving", false);
+        anim.SetBool(ANIM_IS_MOVING, false);
     }
 
     #endregion
@@ -88,6 +93,11 @@ public class PlayerMovement : MonoBehaviour
         if(!Jump()) jumpBufferTimer = jumpBuffer;
     }
 
+    private void StopJump()
+    {
+        if(rb.linearVelocityY > 0) rb.linearVelocityY *= 0.5f;
+    }
+
     private bool Jump()
     {
         if(!CanJump()) return false;
@@ -95,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocityY = jumpForce;
         jumpBufferTimer = 0;
         coyoteJumpTimer = 0;
+
         return true;
     }
 
