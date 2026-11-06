@@ -53,6 +53,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move(Vector2 input)
     {
+        if(input.x == 0)
+        {
+            StopMove();
+            return;
+        }
+
         rb.linearVelocityX = input.x * movementSpeed;
 
         bool lastRight = right;
