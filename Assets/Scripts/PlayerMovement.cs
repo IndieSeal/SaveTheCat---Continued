@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator anim;
+    [SerializeField] private CapsuleCollider2D collider2D;
     
     [Header("Movement")]
     [SerializeField] private float movementSpeed = 5;
@@ -59,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         CoyoteJump();
         BufferJump();
 
+        collider2D.size = new Vector2(IsGrounded() ? 1.3f : 0.65f, collider2D.size.y);
         anim.SetFloat(ANIM_VELOCITY_Y, rb.linearVelocityY);
         cinemachine.Composition.ScreenPosition = Vector2.Lerp(cinemachine.Composition.ScreenPosition, targetLookDirection, (targetLookDirection == Vector2.zero ? returnLookSpeed : startLookSpeed) * Time.deltaTime);
     }
