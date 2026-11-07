@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -12,6 +13,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float movementSpeed = 5;
     private bool right = true;
+
+    [Header("Looking")]
+    [SerializeField] private float startLookSpeed = 2;
+    [SerializeField] private float returnLookSpeed = 4;
+    private Vector2 targetLookDirection;
+    private bool isLooking;
+    private CinemachinePositionComposer cinemachine;
 
     [Header("Jumping")]
     [SerializeField] private float jumpForce = 20;
@@ -41,23 +49,34 @@ public class PlayerMovement : MonoBehaviour
         UserInput.OnStopJump -= StopJump;
     }
 
+    void Awake()
+    {
+        cinemachine = FindAnyObjectByType<CinemachinePositionComposer>();
+    }
+
     void Update()
     {
         CoyoteJump();
         BufferJump();
 
         anim.SetFloat(ANIM_VELOCITY_Y, rb.linearVelocityY);
+        cinemachine.Composition.ScreenPosition = Vector2.Lerp(cinemachine.Composition.ScreenPosition, targetLookDirection, (targetLookDirection == Vector2.zero ? returnLookSpeed : startLookSpeed) * Time.deltaTime);
     }
 
     #region Movement
 
     private void Move(Vector2 input)
     {
+        if(isLooking && input.y != 0) return;
         if(input.x == 0)
         {
             StopMove();
+            if(input.y != 0) Look(input.y);
+            else Look(0);
+
             return;
         }
+        else Look(0);
 
         rb.linearVelocityX = input.x * movementSpeed;
 
@@ -74,6 +93,21 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.linearVelocityX = 0;
         anim.SetBool(ANIM_IS_MOVING, false);
+
+        Look(0);
+    }
+
+    private void Look(float dir)
+    {
+        if (!IsGrounded()) dir = 0;
+
+        targetLookDirection = new Vector2(0, dir * 0.25f);
+        if(dir == 0)
+        {
+            isLooking = false;
+            cinemachine.transform.position += new Vector3(0, 10, 0);
+        }
+        else isLooking = true;
     }
 
     #endregion
