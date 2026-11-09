@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private const string ANIM_VELOCITY_Y = "VelocityY";
     private const string ANIM_IS_MOVING = "IsMoving";
+    private const string ANIM_ATTACK = "Attack";
 
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
@@ -39,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
 
         UserInput.OnJump += InputJump;
         UserInput.OnStopJump += StopJump;
+
+        UserInput.OnAttack += Attack;
     }
 
     void OnDisable()
@@ -48,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
 
         UserInput.OnJump -= InputJump;
         UserInput.OnStopJump -= StopJump;
+
+        UserInput.OnAttack -= Attack;
     }
 
     void Awake()
@@ -153,6 +158,17 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CanJump() => coyoteJumpTimer > 0 || !Application.isPlaying && IsGrounded();
     private bool IsGrounded() => Physics2D.OverlapCircle(transform.position, groundedRadius, groundedMask) != null;
+
+    #endregion
+
+    #region Attack
+
+    private void Attack()
+    {
+        if(isLooking) return;
+        
+        anim.SetTrigger(ANIM_ATTACK);
+    }
 
     #endregion
 

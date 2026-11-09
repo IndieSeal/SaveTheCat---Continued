@@ -1,1 +1,2 @@
 - https://anokolisa.itch.io/sidescroller-pixelart-sprites-asset-pack-forest-16x16
+- https://pimen.itch.io/battle-vfx-slashes-and-thrusts

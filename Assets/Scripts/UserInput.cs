@@ -9,6 +9,7 @@ public class UserInput : MonoBehaviour
     public const string MOVE_ACTION_NAME = "Move";
     public const string JUMP_ACTION_NAME = "Jump";
     public const string INTERACT_ACTION_NAME = "Interact";
+    public const string ATTACK_ACTION_NAME = "Attack";
     
     public static event Action<Vector2> OnMove;
     public static event Action OnStopMoving;
@@ -18,6 +19,9 @@ public class UserInput : MonoBehaviour
     public static event Action OnJump;
     public static event Action OnStopJump;
     private InputAction jumpAction;
+
+    public static event Action OnAttack;
+    private InputAction attackAction;
 
     public static event Action OnInteractStart;
     public static event Action OnInteractStop;
@@ -29,13 +33,17 @@ public class UserInput : MonoBehaviour
     {
         moveAction = playerInput.actions.FindAction(MOVE_ACTION_NAME);
         jumpAction = playerInput.actions.FindAction(JUMP_ACTION_NAME);
+
         interactAction = playerInput.actions.FindAction(INTERACT_ACTION_NAME);
+        attackAction = playerInput.actions.FindAction(ATTACK_ACTION_NAME);
     }
 
     void OnEnable()
     {
         jumpAction.started += OnJumpStarted;
         jumpAction.canceled += OnJumpStop;
+
+        attackAction.performed += OnAttackPerformed;
 
         interactAction.started += OnInteractStarted;
         interactAction.canceled += OnInteractStopped;
@@ -45,6 +53,8 @@ public class UserInput : MonoBehaviour
     {
         jumpAction.started -= OnJumpStarted;
         jumpAction.canceled -= OnJumpStop;
+
+        attackAction.performed -= OnAttackPerformed;
 
         interactAction.started -= OnInteractStarted;
         interactAction.canceled -= OnInteractStopped;
@@ -58,8 +68,6 @@ public class UserInput : MonoBehaviour
             wasMoving = false;
             OnStopMoving?.Invoke();
         }
-     
-        //if(jumpAction.IsInProgress()) OnJumpHeld();
     }
 
     private void OnMoveTriggered()
@@ -70,6 +78,8 @@ public class UserInput : MonoBehaviour
 
     private void OnJumpStarted(CallbackContext context) => OnJump?.Invoke();
     private void OnJumpStop(CallbackContext context) => OnStopJump?.Invoke();
+
+    private void OnAttackPerformed(CallbackContext context) => OnAttack?.Invoke();
 
     private void OnInteractStarted(CallbackContext context) => OnInteractStart?.Invoke();
     private void OnInteractStopped(CallbackContext context) => OnInteractStop?.Invoke();
