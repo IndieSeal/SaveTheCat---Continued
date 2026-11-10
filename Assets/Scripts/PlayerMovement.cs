@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -112,9 +113,23 @@ public class PlayerMovement : MonoBehaviour
         if(dir == 0)
         {
             isLooking = false;
-            cinemachine.transform.position += new Vector3(0, 10, 0);
+            SmallResetCamera();
         }
         else isLooking = true;
+    }
+
+    public void SmallResetCamera()
+    {
+        cinemachine.transform.position += new Vector3(0, 10, 0);
+    }
+
+    public void ResetCamera() => StartCoroutine(ResetCameraCoroutine());
+
+    private IEnumerator ResetCameraCoroutine()
+    {
+        cinemachine.TargetOffset = new Vector3(0, 10, 0);
+        yield return null;
+        cinemachine.TargetOffset = new Vector3(0, 0, 0);
     }
 
     #endregion
