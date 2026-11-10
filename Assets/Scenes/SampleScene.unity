@@ -4509,8 +4509,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1870606233}
+  - component: {fileID: 1870606236}
   - component: {fileID: 1870606235}
-  - component: {fileID: 1870606234}
   m_Layer: 8
   m_Name: Hurtbox
   m_TagString: Untagged
@@ -4533,18 +4533,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2011285302}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1870606234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1870606232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 684ddc3ff630a796da73fc6c9aec0415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hurtbox
 --- !u!61 &1870606235
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4591,6 +4579,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &1870606236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870606232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfe71ae663359ccb9be774158952437f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  vulnerabilityTime: 0.4
+  maxHealth: 10
 --- !u!1 &1948758433
 GameObject:
   m_ObjectHideFlags: 0
@@ -4602,7 +4604,6 @@ GameObject:
   - component: {fileID: 1948758434}
   - component: {fileID: 1948758435}
   - component: {fileID: 1948758439}
-  - component: {fileID: 1948758438}
   - component: {fileID: 1948758436}
   - component: {fileID: 1948758437}
   m_Layer: 7
@@ -4717,18 +4718,6 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1948758438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948758433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 684ddc3ff630a796da73fc6c9aec0415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hurtbox
 --- !u!114 &1948758439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4741,7 +4730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfe71ae663359ccb9be774158952437f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  hurtbox: {fileID: 1948758438}
+  vulnerabilityTime: 0.4
   maxHealth: 10
 --- !u!1 &1997244302
 GameObject:
@@ -4934,11 +4923,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2011285302}
+  - component: {fileID: 2011285307}
+  - component: {fileID: 2011285306}
   - component: {fileID: 2011285304}
   - component: {fileID: 2011285305}
-  - component: {fileID: 2011285307}
-  - component: {fileID: 2011285308}
-  - component: {fileID: 2011285306}
   m_Layer: 8
   m_Name: Snail
   m_TagString: Untagged
@@ -5049,7 +5037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Knockback
   rb: {fileID: 2011285305}
-  hurtbox: {fileID: 1870606234}
+  hurtbox: {fileID: 1870606236}
   knockBackMultiplier: 1
 --- !u!114 &2011285307
 MonoBehaviour:
@@ -5063,20 +5051,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f943c6249563e108de7b9246bd1ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Snail
---- !u!114 &2011285308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2011285300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfe71ae663359ccb9be774158952437f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Health
-  hurtbox: {fileID: 1870606234}
-  maxHealth: 10
+  rb: {fileID: 2011285305}
+  health: {fileID: 1870606236}
+  movementSpeed: 1
 --- !u!1 &2023278491
 GameObject:
   m_ObjectHideFlags: 0

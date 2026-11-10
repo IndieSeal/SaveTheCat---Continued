@@ -28,6 +28,8 @@ public class Knockback : MonoBehaviour
 
     public void Apply(Vector2 direction, Vector2 force)
     {
+        if(force == Vector2.zero) return;
+        
         Vector2 knockback = ((Vector2)transform.position - direction).normalized;
         rb.AddForce(knockback * force * knockBackMultiplier, ForceMode2D.Impulse);
     }

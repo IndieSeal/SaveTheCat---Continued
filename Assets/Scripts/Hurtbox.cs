@@ -9,6 +9,11 @@ public class Hurtbox : MonoBehaviour
     {
         if(!collision.TryGetComponent(out Hitbox hitbox)) return;
 
+        OnHit(hitbox);
+    }
+
+    protected virtual void OnHit(Hitbox hitbox)
+    {
         OnHurt?.Invoke(hitbox, hitbox.KnockbackForce);
     }
 }
