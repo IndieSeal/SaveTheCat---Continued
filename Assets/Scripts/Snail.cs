@@ -22,7 +22,7 @@ public class Snail : MonoBehaviour
 
     void Update()
     {
-        //rb.linearVelocityX = movementSpeed;
+        if(rb.linearVelocityX < movementSpeed) rb.linearVelocityX = movementSpeed;
     }
 
     private void OnDeath()
